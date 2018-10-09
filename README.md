@@ -89,19 +89,21 @@ public class RedisConfiguration extends CachingConfigurerSupport{
 
 
 ```
+---
 ##### 相应的注解说明
+ @Cacheable可以标记在一个方法上，也可以标记在一个类上。当标记在一个方法上时表示该方法是支持缓存的，当标记在一个类上时则表示该类所有的方法都是支持缓存的.@Cacheable可以指定三个属性，value、key和condition。value属性指定Cache名称,使用key属性自定义key,自定义策略是指我们可以通过Spring的EL表达式来指定我们的key。这里的EL表达式可以使用方法参数及它们对应的属性。使用方法参数时我们可以直接使用“#参数名”或者“#p参数index”。除了上述使用方法参数作为key之外，Spring还为我们提供了一个root对象可以用来生成key。通过该root对象我们可以获取到以下信息。
 
-@Cacheable可以标记在一个方法上，也可以标记在一个类上。当标记在一个方法上时表示该方法是支持缓存的，当标记在一个类上时则表示该类所有的方法都是支持缓存的.@Cacheable可以指定三个属性，value、key和condition。<br>
-value属性指定Cache名称,使用key属性自定义key,自定义策略是指我们可以通过Spring的EL表达式来指定我们的key。这里的EL表达式可以使用方法参数及它们对应的属性。使用方法参数时我们可以直接使用“#参数名”或者“#p参数index”。<br>
-除了上述使用方法参数作为key之外，Spring还为我们提供了一个root对象可以用来生成key。通过该root对象我们可以获取到以下信息。
+###### root对象的写法
 属性名称|描述|示例
 ---|:--:|---:
 methodName|当前方法名|#root.methodName
 method|当前方法|#root.method.name
 target|当前被调用的对象|#root.target
-targetClass|当前被调用的对象的class|	#root.targetClass
+targetClass|当前被调用的对象的class|#root.targetClass
 args|当前方法参数组成的数组|#root.args[0]
 caches|当前被调用的方法使用的Cache|#root.caches[0].name
+
+---
  当我们要使用root对象的属性作为key时我们也可以将“#root”省略，因为Spring默认使用的就是root对象的属性。如：
  ```java
     @Cacheable(value={"users", "xxx"}, key="caches[1].name")
